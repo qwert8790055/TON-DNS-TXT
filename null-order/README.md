@@ -22,6 +22,7 @@ Authorized TON security research community with on-chain identity (`dns_text`), 
 |---|---|
 | `docs/ARCHITECTURE.md` | Community structure, roles, ops rhythm |
 | `docs/TON_ECOSYSTEM.md` | TON stack, dns_text schema, lab scope |
+| `docs/PENTEST_SKILLS.md` | Penetration testing skills map (general + TON) |
 | `config/dns_text_schema.yaml` | On-chain profile key convention |
 | `config/ton_stack.yaml` | TON layers, tools, research topics |
 | `config/` | Roles, channels, content calendar |

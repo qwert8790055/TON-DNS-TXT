@@ -2,6 +2,8 @@
 
 > Authorized TON security research · on-chain identity · builder community
 
+See also: [PENTEST_SKILLS.md](./PENTEST_SKILLS.md)
+
 ## Positioning
 
 NULL//ORDER is a **TON-native** security research community. All activity anchors to the TON stack:

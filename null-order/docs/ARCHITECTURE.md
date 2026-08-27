@@ -2,7 +2,7 @@
 
 > TON Ecosystem · Security Research · Authorized Testnet Lab
 
-See also: [TON_ECOSYSTEM.md](./TON_ECOSYSTEM.md)
+See also: [TON_ECOSYSTEM.md](./TON_ECOSYSTEM.md) · [PENTEST_SKILLS.md](./PENTEST_SKILLS.md)
 
 ## Positioning
 
