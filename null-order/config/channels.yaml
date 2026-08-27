@@ -1,0 +1,63 @@
+# Telegram channel & group configuration — TON Ecosystem
+
+brand:
+  name: "NULL//ORDER"
+  short: "NØ"
+  tagline: "TON Security Research · Smart Contracts · dns_text"
+  motto: "Authorized Research Only. VERIFY ON-CHAIN."
+
+groups:
+  core:
+    name: "NØ//CORE"
+    description: |
+      NULL//ORDER — CORE · TON Ecosystem
+
+      TON Security Research · TVM · Smart Contracts
+      dns_text · Mini Apps · Jetton · Authorized Testnet Lab
+
+      Bind identity: .ton domain + dns_text
+      Authorized Research Only. VERIFY ON-CHAIN.
+    topics:
+      - id: ton
+        name: "TON / NEWS"
+        emoji: "💎"
+      - id: contracts
+        name: "CONTRACTS / TVM"
+        emoji: "📜"
+      - id: dns
+        name: "DNS / IDENTITY"
+        emoji: "🔗"
+      - id: build
+        name: "BUILD / MINI APPS"
+        emoji: "🛠"
+      - id: research
+        name: "RESEARCH / PHANTOM"
+        emoji: "🔬"
+      - id: lab
+        name: "LAB / DEEP CORE"
+        emoji: "🧪"
+
+channels:
+  bulletin:
+    name: "NØ//BULLETIN"
+    description: |
+      NULL//ORDER · TON Ecosystem Bulletin
+
+      [TON] [CVE] [RESEARCH] [LAB] [CTF] [BUILD] [RECRUIT]
+
+      Admin posts only.
+    tags:
+      TON: "TON 生态资讯"
+      CVE: "合约 / 基础设施漏洞"
+      RESEARCH: "原创 TON 安全研究"
+      LAB: "Testnet 实验室"
+      CTF: "TON 靶场 / 赛事"
+      BUILD: "工具 / Mini App"
+      RECRUIT: "招募"
+
+integrations:
+  dns_text_miniapp:
+    name: "TON DNS TXT"
+    description: "Write dns_text records to your .ton domain"
+    repo_path: "/"
+    env_key: "DNS_TEXT_APP_URL"

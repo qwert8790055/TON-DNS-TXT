@@ -1,0 +1,68 @@
+# Content calendar — TON Ecosystem (UTC+8)
+
+timezone: "Asia/Shanghai"
+
+daily:
+  morning:
+    time: "09:00"
+    tasks:
+      - type: ton
+        tag: "[TON]"
+        label: "1× TON 生态资讯"
+        template: bulletin/ton.md
+      - type: cve
+        tag: "[CVE]"
+        label: "1× TON 合约 / 基础设施漏洞知识点"
+        template: bulletin/cve.md
+
+  afternoon:
+    time: "14:00"
+    tasks:
+      - type: discussion
+        label: "TON 技术讨论 (TVM / dns_text / Mini App)"
+        note: "NØ//CORE · CONTRACTS or DNS topic"
+      - type: ctf
+        tag: "[CTF]"
+        label: "TON 靶场 / testnet 题目"
+        template: bulletin/ctf.md
+
+  evening:
+    time: "21:00"
+    tasks:
+      - type: summary
+        label: "当日 TON 研究总结"
+        note: "Brief recap in NØ//CORE"
+      - type: free
+        label: "社区自由讨论"
+
+weekly:
+  monday:
+    time: "10:00"
+    series: "NØ//WEEKLY"
+    label: "本周 TON 研究计划"
+    template: weekly/weekly_plan.md
+
+  wednesday:
+    time: "20:00"
+    series: "NØ//LAB"
+    label: "Testnet 授权靶场 / TON CTF"
+    template: weekly/lab_session.md
+
+  friday:
+    time: "18:00"
+    series: "NØ//RESEARCH"
+    label: "TON 合约 / TVM 完整分析"
+    template: weekly/research_report.md
+
+  sunday:
+    time: "20:00"
+    series: "NØ//REPORT"
+    label: "本周 TON 生态总结"
+    template: weekly/weekly_report.md
+    sections:
+      - "新增成员 & dns_text 验证"
+      - "TON 研究成果"
+      - "合约 / CVE"
+      - "Testnet CTF"
+      - "工具 / Mini App"
+      - "下周计划"

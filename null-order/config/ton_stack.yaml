@@ -1,0 +1,67 @@
+# TON ecosystem reference for NULL//ORDER content & labs
+
+layers:
+  identity:
+    - TON DNS (.ton domains as NFTs)
+    - dns_text (0x1eda TL-B records)
+    - TON Connect identity
+
+  contracts:
+    - FunC
+    - Tact
+    - TVM opcodes
+    - Jetton (TEP-74)
+    - NFT (TEP-62)
+    - DNS contracts
+
+  applications:
+    - Telegram Mini Apps
+    - TON Sites (ADNL)
+    - TON Storage bags
+
+  infrastructure:
+    - Validators / liteservers
+    - TonCenter / TONAPI
+    - Testnet / mainnet
+
+tools:
+  read:
+    - dnsresolve get-method
+    - TonCenter JSON-RPC
+    - TONAPI
+    - tonviewer.com
+
+  write:
+    - TonConnect + change_dns_record
+    - TON DNS TXT Mini App (this repo)
+
+  dev:
+    - Blueprint / tact / func
+    - sandbox / local TVM
+    - testnet faucet
+
+lab_targets:
+  authorized:
+    - TON testnet contracts (self-deployed)
+    - Local TVM sandbox
+    - Community lab .ton domains
+    - CTF contracts with explicit scope
+
+  forbidden:
+    - Mainnet contracts without authorization
+    - User wallets / funds
+    - Third-party production infra
+
+research_topics:
+  - Jetton authorization boundaries
+  - DNS record ownership & change_dns_record
+  - Mini App ↔ wallet trust model
+  - TVM cell parsing vulnerabilities
+  - TON Connect session security
+  - dns_text schema interoperability
+
+links:
+  ton: https://ton.org
+  dns: https://dns.ton.org
+  docs: https://docs.ton.org
+  tep: https://github.com/ton-blockchain/TEPs
