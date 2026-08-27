@@ -23,6 +23,7 @@ Authorized TON security research community with on-chain identity (`dns_text`), 
 | `docs/ARCHITECTURE.md` | Community structure, roles, ops rhythm |
 | `docs/TON_ECOSYSTEM.md` | TON stack, dns_text schema, lab scope |
 | `docs/PENTEST_SKILLS.md` | Penetration testing skills map (general + TON) |
+| `docs/THREAT_BC_SCAM_INTEL.md` | BC 杀猪盘威胁情报与关键词库 |
 | `config/dns_text_schema.yaml` | On-chain profile key convention |
 | `config/ton_stack.yaml` | TON layers, tools, research topics |
 | `config/` | Roles, channels, content calendar |
@@ -65,7 +66,7 @@ python3 bot.py
 | `/rules` | RULE #01 (testnet scope) |
 | `/recruit` | TON ecosystem recruitment |
 | `/calendar` | Today's TON content tasks |
-| `/post ton\|cve\|research\|build…` | Bulletin draft |
+| `/post ton\|cve\|research\|threat…` | Bulletin draft |
 | `/promote` / `/task` / `/status` | Roles & TON task tracking |
 
 ## Brand Voice

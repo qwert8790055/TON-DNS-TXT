@@ -53,6 +53,7 @@ Authorized Research Only. VERIFY ON-CHAIN.
 | `[CTF]` | TON 靶场 |
 | `[BUILD]` | 工具 / Mini App |
 | `[RECRUIT]` | 招募 |
+| `[THREAT]` | 涉诈 BC / 卡款 IOC 与话术 |
 
 ---
 
