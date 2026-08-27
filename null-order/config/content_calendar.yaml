@@ -1,0 +1,67 @@
+# Content operations calendar — times in UTC+8 (Asia/Shanghai)
+
+timezone: "Asia/Shanghai"
+
+daily:
+  morning:
+    time: "09:00"
+    tasks:
+      - type: news
+        tag: "[NEWS]"
+        label: "1× 安全资讯"
+        template: bulletin/news.md
+      - type: cve
+        tag: "[CVE]"
+        label: "1× CVE / 漏洞知识点"
+        template: bulletin/cve.md
+
+  afternoon:
+    time: "14:00"
+    tasks:
+      - type: discussion
+        label: "技术讨论"
+        note: "Free-form in NØ//CORE"
+      - type: ctf
+        tag: "[CTF]"
+        label: "CTF / 靶场题目"
+        template: bulletin/ctf.md
+
+  evening:
+    time: "21:00"
+    tasks:
+      - type: summary
+        label: "当日研究总结"
+        note: "Brief recap in NØ//CORE"
+      - type: free
+        label: "社区自由讨论"
+
+weekly:
+  monday:
+    time: "10:00"
+    series: "NØ//WEEKLY"
+    label: "发布本周研究计划"
+    template: weekly/weekly_plan.md
+
+  wednesday:
+    time: "20:00"
+    series: "NØ//LAB"
+    label: "授权靶场 / CTF 活动"
+    template: weekly/lab_session.md
+
+  friday:
+    time: "18:00"
+    series: "NØ//RESEARCH"
+    label: "完整技术分析"
+    template: weekly/research_report.md
+
+  sunday:
+    time: "20:00"
+    series: "NØ//REPORT"
+    label: "本周总结"
+    template: weekly/weekly_report.md
+    sections:
+      - "新增成员"
+      - "研究成果"
+      - "CVE"
+      - "CTF"
+      - "下周计划"

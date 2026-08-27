@@ -1,0 +1,84 @@
+# NULL//ORDER member roles — sync custom titles in Telegram manually or via bot /promote
+
+roles:
+  ARCHITECT:
+    level: 100
+    title: "ARCHITECT"
+    description: "Core administration, config, final promotions"
+    can_promote: true
+    can_post_bulletin: true
+    can_moderate: true
+
+  MODERATOR:
+    level: 90
+    title: "MODERATOR"
+    description: "Community moderation, topic management"
+    can_promote: false
+    can_post_bulletin: true
+    can_moderate: true
+
+  OPERATOR:
+    level: 70
+    title: "OPERATOR"
+    description: "Red team lab sessions, CTF hosting"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+
+  RESEARCHER:
+    level: 60
+    title: "RESEARCHER"
+    description: "Publish research, lead analysis threads"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+
+  ENGINEER:
+    level: 60
+    title: "ENGINEER"
+    description: "Tooling, automation, infrastructure"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+
+  ANALYST:
+    level: 50
+    title: "ANALYST"
+    description: "Threat intel, CVE triage"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+
+  INITIATE:
+    level: 20
+    title: "INITIATE"
+    description: "New member — probation, assigned technical tasks"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+    default: true
+
+  GUEST:
+    level: 10
+    title: "GUEST"
+    description: "Read-only / limited participation"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+
+# Promotion paths after INITIATE task completion
+promotion_paths:
+  INITIATE:
+    - RESEARCHER
+    - ENGINEER
+    - OPERATOR
+    - ANALYST
+
+# Minimum tasks before promotion from INITIATE
+initiate_requirements:
+  min_tasks: 2
+  task_types:
+    - ctf_solve
+    - lab_writeup
+    - cve_analysis
+    - tool_contribution

@@ -1,0 +1,49 @@
+# Telegram channel & group configuration
+
+brand:
+  name: "NULL//ORDER"
+  short: "NØ"
+  tagline: "Security Research · Red Team · Reverse Engineering"
+  motto: "Authorized Research Only. VERIFY EVERYTHING."
+
+groups:
+  core:
+    name: "NØ//CORE"
+    description: |
+      NULL//ORDER — CORE
+
+      Security Research · Red Team · Reverse Engineering
+      CTF · Threat Intelligence · Security Engineering
+
+      Authorized Research Only.
+      VERIFY EVERYTHING.
+    topics:
+      - id: news
+        name: "NEWS"
+        emoji: "📡"
+      - id: redteam
+        name: "REDTEAM / VANGUARD"
+        emoji: "⚔️"
+      - id: research
+        name: "RESEARCH / PHANTOM"
+        emoji: "🔬"
+      - id: lab
+        name: "LAB / DEEP CORE"
+        emoji: "🧪"
+
+channels:
+  bulletin:
+    name: "NØ//BULLETIN"
+    description: |
+      NULL//ORDER Official Bulletin
+
+      [NEWS] [CVE] [RESEARCH] [LAB] [CTF] [RECRUIT]
+
+      Admin posts only.
+    tags:
+      NEWS: "安全资讯"
+      CVE: "漏洞情报"
+      RESEARCH: "原创研究"
+      LAB: "实验室更新"
+      CTF: "赛事 / 靶场"
+      RECRUIT: "招募"
