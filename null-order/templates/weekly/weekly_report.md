@@ -1,19 +1,23 @@
-NØ//REPORT — Week {{week_number}} ({{date_range}})
+NØ//REPORT — Week {{week_number}} · TON ({{date_range}})
 
 Members
 - New: {{new_members}}
+- dns_text verified: {{dns_verified}}
 - Promoted: {{promotions}}
 
-Research
+TON Research
 {{research_summary}}
 
-CVE Coverage
+Contracts / CVE
 {{cve_summary}}
 
-CTF / Lab
+Testnet CTF / Lab
 {{ctf_summary}}
+
+Tools / Mini Apps
+{{build_summary}}
 
 Next Week
 {{next_week_plan}}
 
-— NULL//ORDER · NØ//BULLETIN
+— NULL//ORDER · TON Ecosystem · NØ//BULLETIN

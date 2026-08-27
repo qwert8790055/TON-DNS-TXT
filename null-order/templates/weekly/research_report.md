@@ -2,14 +2,15 @@ NØ//RESEARCH-{{number}}
 
 {{title}}
 
-Target: Controlled Lab
+Target: Testnet / Controlled Lab
+Network: {{network}}
 Category: {{category}}
 Severity: {{severity}}
 
 {{body}}
 
-Structure: 案例 → 原理 → 风险 → 复现环境 → 修复 → 防御
+Structure: 案例 → TVM/合约原理 → 风险 → testnet 复现 → 修复 → 防御
 
-Full bulletin post: NØ//BULLETIN
+Full bulletin: NØ//BULLETIN
 
-— NULL//ORDER · NØ//CORE · RESEARCH / PHANTOM
+— NULL//ORDER · TON · RESEARCH / PHANTOM

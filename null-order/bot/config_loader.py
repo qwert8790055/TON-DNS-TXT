@@ -37,6 +37,14 @@ def load_calendar() -> dict:
     return load_yaml("content_calendar.yaml")
 
 
+def load_dns_schema() -> dict:
+    return load_yaml("dns_text_schema.yaml")
+
+
+def load_ton_stack() -> dict:
+    return load_yaml("ton_stack.yaml")
+
+
 def load_template(*parts: str) -> str:
     path = get_root() / "templates" / Path(*parts)
     return path.read_text(encoding="utf-8")

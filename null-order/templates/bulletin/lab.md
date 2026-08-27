@@ -1,5 +1,6 @@
 [LAB] NØ//LAB — {{title}}
 
+Network: {{network}}
 Environment: {{environment}}
 Access: {{access}}
 Schedule: {{schedule}}
@@ -7,14 +8,14 @@ Schedule: {{schedule}}
 Objective
 {{objective}}
 
-Scope (Authorized)
+Scope (Authorized Testnet)
 {{scope}}
 
 Rules
-- Authorized targets only (NULL//ORDER RULE #01)
-- No real-world unauthorized testing
-- Document findings in structured writeups
+- Testnet / authorized contracts only (NULL//ORDER RULE #01)
+- No mainnet exploitation without written scope
+- Document findings as structured writeups
 
 Join: {{join_link}}
 
-— NULL//ORDER · NØ//BULLETIN
+— NULL//ORDER · TON Ecosystem · NØ//BULLETIN

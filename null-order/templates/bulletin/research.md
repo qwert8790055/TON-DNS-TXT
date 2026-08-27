@@ -3,16 +3,17 @@
 {{title}}
 
 Target: {{target}}
+Network: {{network}}
 Category: {{category}}
 Severity: {{severity}}
 
 Overview
 {{overview}}
 
-Root Cause
+Root Cause (TVM / Contract)
 {{root_cause}}
 
-Reproduction (Controlled Lab)
+Reproduction (Testnet / Controlled Lab)
 {{reproduction}}
 
 Remediation
@@ -21,4 +22,4 @@ Remediation
 Defense
 {{defense}}
 
-— NULL//ORDER · NØ//BULLETIN
+— NULL//ORDER · TON Ecosystem · NØ//BULLETIN

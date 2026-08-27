@@ -1,13 +1,16 @@
-NØ//WEEKLY — Week {{week_number}}
+NØ//WEEKLY — Week {{week_number}} · TON
 
 Research Plan ({{date_range}})
 
 {{plan_items}}
 
-Focus Areas
+TON Focus
 {{focus_areas}}
 
-Lab / CTF
+Testnet Lab / CTF
 {{lab_schedule}}
 
-— NULL//ORDER · NØ//CORE
+dns_text / Tooling
+{{tooling}}
+
+— NULL//ORDER · TON Ecosystem · NØ//CORE

@@ -1,0 +1,70 @@
+# NULL//ORDER dns_text key schema
+# Write via TON DNS TXT Mini App — keys stored as SHA-256 on-chain
+
+namespace: nullorder
+version: "1.0"
+
+# Standard keys (community-specific prefix)
+keys:
+  nullorder.role:
+    description: "Community role tier"
+    example: "RESEARCHER"
+    max_bytes: 32
+    required_for_verification: true
+
+  nullorder.telegram:
+    description: "Telegram username (with or without @)"
+    example: "@alice"
+    max_bytes: 64
+    required_for_verification: true
+
+  nullorder.bio:
+    description: "Short bio / focus areas"
+    example: "TVM · FunC · Jetton security"
+    max_bytes: 123
+
+  nullorder.github:
+    description: "GitHub profile or repo URL"
+    example: "https://github.com/alice"
+    max_bytes: 123
+
+  nullorder.research:
+    description: "Latest research post URL or NØ//RESEARCH id"
+    example: "NØ//RESEARCH-001"
+    max_bytes: 64
+
+# Interoperable keys (no prefix — readable by any TON app)
+interop_keys:
+  channel:
+    description: "Telegram channel or group link"
+    example: "https://t.me/nullorder_core"
+
+  avatar:
+    description: "Profile image URL"
+    example: "https://example.com/avatar.png"
+
+  url:
+    description: "Primary website or TON Site"
+    example: "https://nullorder.ton"
+
+  pgp:
+    description: "PGP public key block"
+    example: "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+
+valid_roles:
+  - ARCHITECT
+  - MODERATOR
+  - OPERATOR
+  - RESEARCHER
+  - ENGINEER
+  - BUILDER
+  - ANALYST
+  - INITIATE
+  - GUEST
+
+verification:
+  steps:
+    - "Member writes nullorder.telegram and nullorder.role to their .ton domain"
+    - "Admin calls dnsresolve(category=0) or uses Mini App to read records"
+    - "Telegram username must match on-chain nullorder.telegram"
+    - "Admin records /task <user_id> dns_text_profile <domain.ton>"

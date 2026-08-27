@@ -1,10 +1,10 @@
-# NULL//ORDER member roles — sync custom titles in Telegram manually or via bot /promote
+# NULL//ORDER member roles — TON Ecosystem
 
 roles:
   ARCHITECT:
     level: 100
     title: "ARCHITECT"
-    description: "Core administration, config, final promotions"
+    description: "Core admin, TON lab scope, final promotions"
     can_promote: true
     can_post_bulletin: true
     can_moderate: true
@@ -12,7 +12,7 @@ roles:
   MODERATOR:
     level: 90
     title: "MODERATOR"
-    description: "Community moderation, topic management"
+    description: "Community moderation, dns_text verification"
     can_promote: false
     can_post_bulletin: true
     can_moderate: true
@@ -20,7 +20,7 @@ roles:
   OPERATOR:
     level: 70
     title: "OPERATOR"
-    description: "Red team lab sessions, CTF hosting"
+    description: "Testnet lab sessions, TON CTF hosting"
     can_promote: false
     can_post_bulletin: false
     can_moderate: false
@@ -28,7 +28,7 @@ roles:
   RESEARCHER:
     level: 60
     title: "RESEARCHER"
-    description: "Publish research, lead analysis threads"
+    description: "TVM / contract analysis, publish NØ//RESEARCH"
     can_promote: false
     can_post_bulletin: false
     can_moderate: false
@@ -36,7 +36,15 @@ roles:
   ENGINEER:
     level: 60
     title: "ENGINEER"
-    description: "Tooling, automation, infrastructure"
+    description: "TON tooling, bots, infra, liteserver"
+    can_promote: false
+    can_post_bulletin: false
+    can_moderate: false
+
+  BUILDER:
+    level: 55
+    title: "BUILDER"
+    description: "Mini Apps, TON Connect dApps, dns_text integrations"
     can_promote: false
     can_post_bulletin: false
     can_moderate: false
@@ -44,7 +52,7 @@ roles:
   ANALYST:
     level: 50
     title: "ANALYST"
-    description: "Threat intel, CVE triage"
+    description: "TON ecosystem intel, TEP tracking, CVE triage"
     can_promote: false
     can_post_bulletin: false
     can_moderate: false
@@ -52,7 +60,7 @@ roles:
   INITIATE:
     level: 20
     title: "INITIATE"
-    description: "New member — probation, assigned technical tasks"
+    description: "New member — TON technical tasks, dns_text profile"
     can_promote: false
     can_post_bulletin: false
     can_moderate: false
@@ -66,19 +74,19 @@ roles:
     can_post_bulletin: false
     can_moderate: false
 
-# Promotion paths after INITIATE task completion
 promotion_paths:
   INITIATE:
     - RESEARCHER
     - ENGINEER
+    - BUILDER
     - OPERATOR
     - ANALYST
 
-# Minimum tasks before promotion from INITIATE
 initiate_requirements:
   min_tasks: 2
   task_types:
-    - ctf_solve
-    - lab_writeup
-    - cve_analysis
-    - tool_contribution
+    - ton_ctf_solve
+    - contract_writeup
+    - dns_text_profile
+    - miniapp_contribution
+    - tep_review

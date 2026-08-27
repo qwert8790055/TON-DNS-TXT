@@ -2,6 +2,7 @@ NØ//LAB — {{title}}
 
 When: {{datetime}}
 Host: {{host}}
+Network: testnet
 Environment: {{environment}}
 
 Today's Objective
@@ -10,6 +11,6 @@ Today's Objective
 Prerequisites
 {{prerequisites}}
 
-Authorized scope only — NULL//ORDER RULE #01 applies.
+Authorized testnet scope only — NULL//ORDER RULE #01 applies.
 
-— NULL//ORDER · NØ//CORE · LAB / DEEP CORE
+— NULL//ORDER · TON · LAB / DEEP CORE

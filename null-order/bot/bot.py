@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 
 from dotenv import load_dotenv
-from telegram import Update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppInfo
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -16,7 +16,7 @@ from telegram.ext import (
     filters,
 )
 
-from config_loader import load_roles, load_template, render_template
+from config_loader import load_dns_schema, load_roles, load_template, render_template
 from members import add_task, get_member, init_db, register_member, set_role, task_count
 from scheduler import calendar_tz, reminder_message, today_tasks
 
@@ -33,17 +33,29 @@ ADMIN_IDS = {int(x.strip()) for x in os.getenv("ADMIN_IDS", "").split(",") if x.
 BULLETIN_CHANNEL_ID = os.getenv("BULLETIN_CHANNEL_ID", "")
 CORE_GROUP_ID = os.getenv("CORE_GROUP_ID", "")
 BOT_USERNAME = os.getenv("BOT_USERNAME", "NullOrderBot")
+DNS_TEXT_APP_URL = os.getenv("DNS_TEXT_APP_URL", "https://dns.resistance.dog")
 
 POST_TYPES = {
+    "ton": ("bulletin", "ton.md"),
     "news": ("bulletin", "news.md"),
     "cve": ("bulletin", "cve.md"),
     "research": ("bulletin", "research.md"),
     "lab": ("bulletin", "lab.md"),
     "ctf": ("bulletin", "ctf.md"),
+    "build": ("bulletin", "build.md"),
     "recruit": ("bulletin", "recruit.md"),
 }
 
 VALID_ROLES = set(load_roles().get("roles", {}).keys())
+
+
+def tools_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([[
+        InlineKeyboardButton(
+            text="TON DNS TXT · Write dns_text",
+            web_app=WebAppInfo(url=DNS_TEXT_APP_URL),
+        ),
+    ]])
 
 
 def is_admin(user_id: int | None) -> bool:
@@ -74,6 +86,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         f"{welcome}\n\n{'—' * 20}\n\n{rules}",
         disable_web_page_preview=True,
+        reply_markup=tools_keyboard(),
     )
     if role != "INITIATE":
         await update.message.reply_text(f"Your role: {role}")
@@ -85,6 +98,34 @@ async def rules_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(load_template("onboarding", "rule_01.md"))
 
 
+async def tools_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not update.message:
+        return
+    await update.message.reply_text(
+        "NØ//TOOLS · TON Ecosystem\n\n"
+        "Write dns_text records to your .ton domain.\n"
+        "Use keys: nullorder.role, nullorder.telegram, nullorder.bio\n\n"
+        "See /schema for full key list.",
+        reply_markup=tools_keyboard(),
+    )
+
+
+async def schema_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not update.message:
+        return
+    schema = load_dns_schema()
+    lines = ["NØ//SCHEMA · dns_text profile keys\n"]
+    for key, meta in schema.get("keys", {}).items():
+        req = " *" if meta.get("required_for_verification") else ""
+        lines.append(f"• `{key}`{req} — {meta.get('description', '')}")
+    lines.append("\nInterop keys:")
+    for key, meta in schema.get("interop_keys", {}).items():
+        lines.append(f"• `{key}` — {meta.get('description', '')}")
+    lines.append("\n* required for dns_text verification")
+    lines.append("\nWrite via /tools → TON DNS TXT Mini App")
+    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+
+
 async def recruit_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not update.message:
         return
@@ -92,7 +133,7 @@ async def recruit_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     min_tasks = roles_cfg.get("initiate_requirements", {}).get("min_tasks", 2)
     text = render_template(
         "bulletin", "recruit.md",
-        requirements="Demonstrated research output. Complete technical tasks as INITIATE.",
+        requirements="TON testnet work or verified dns_text profile. No resume-only applications.",
         min_tasks=str(min_tasks),
         apply_link=f"https://t.me/{BOT_USERNAME}",
         bot_username=BOT_USERNAME,
@@ -134,6 +175,7 @@ async def post_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     defaults = {
         "number": "001",
+        "network": "testnet",
         "bot_username": BOT_USERNAME,
         "min_tasks": "2",
         "apply_link": f"https://t.me/{BOT_USERNAME}",
@@ -340,6 +382,8 @@ def main() -> None:
 
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("tools", tools_cmd))
+    application.add_handler(CommandHandler("schema", schema_cmd))
     application.add_handler(CommandHandler("rules", rules_cmd))
     application.add_handler(CommandHandler("recruit", recruit_cmd))
     application.add_handler(CommandHandler("calendar", calendar_cmd))

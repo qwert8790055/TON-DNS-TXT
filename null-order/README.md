@@ -1,73 +1,79 @@
-# NULL//ORDER Community Infrastructure
+# NULL//ORDER · TON Ecosystem
 
-Authorized security research community + red team lab foundation for Telegram.
+Authorized TON security research community with on-chain identity (`dns_text`), testnet labs, and Telegram Mini App integration.
 
 ```
                  NØ
             NULL//ORDER
+             TON Native
                   │
         ┌─────────┴─────────┐
         │                   │
  NØ//BULLETIN          NØ//CORE
-   公告频道              核心群
         │                   │
-        │            ┌──────┼──────┐
-        │            │      │      │
-      NEWS        REDTEAM  RESEARCH  LAB
-      CVE        VANGUARD  PHANTOM  DEEP CORE
+     [TON]            CONTRACTS · DNS
+     [CVE]            BUILD · LAB · CTF
+   [RESEARCH]
 ```
 
 ## Components
 
 | Path | Purpose |
 |---|---|
-| `docs/ARCHITECTURE.md` | Full community architecture, roles, ops rhythm |
-| `config/` | Roles, channels, content calendar (YAML) |
-| `templates/` | Formatted post templates for bulletin & weekly series |
-| `bot/` | Telegram bot — onboarding, post formatting, calendar reminders |
+| `docs/ARCHITECTURE.md` | Community structure, roles, ops rhythm |
+| `docs/TON_ECOSYSTEM.md` | TON stack, dns_text schema, lab scope |
+| `config/dns_text_schema.yaml` | On-chain profile key convention |
+| `config/ton_stack.yaml` | TON layers, tools, research topics |
+| `config/` | Roles, channels, content calendar |
+| `templates/` | TON bulletin & weekly post templates |
+| `bot/` | Telegram bot — onboarding, tools, calendar |
+
+## TON Integration
+
+- **On-chain identity**: members write `nullorder.*` keys to `.ton` via [TON DNS TXT Mini App](../README.md)
+- **Bot `/tools`**: opens Mini App inside Telegram
+- **Bot `/schema`**: shows dns_text key schema for profile binding
+- **Research scope**: testnet & authorized contracts only (RULE #01)
 
 ## Quick Start
 
-### 1. Telegram Setup
+### 1. Telegram
 
-1. Create **NØ//CORE** supergroup (core community)
-2. Create **NØ//BULLETIN** channel (admin-only posts)
-3. Add `@YourNullOrderBot` as admin in both:
-   - Core: manage topics (if used), invite users, restrict members
-   - Bulletin: post messages
-4. Set group description from `config/channels.yaml`
-5. Pin **RULE #01** from `templates/onboarding/rule_01.md`
+1. Create **NØ//CORE** + **NØ//BULLETIN**
+2. Set descriptions from `config/channels.yaml`
+3. Enable topics: TON, CONTRACTS, DNS, BUILD, RESEARCH, LAB
+4. Pin RULE #01 from `templates/onboarding/rule_01.md`
 
 ### 2. Bot
 
 ```bash
 cd null-order/bot
-python -m venv venv
-source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Fill BOT_TOKEN, ADMIN_IDS, BULLETIN_CHANNEL_ID, CORE_GROUP_ID
-python bot.py
+# BOT_TOKEN, ADMIN_IDS, DNS_TEXT_APP_URL, BULLETIN_CHANNEL_ID
+python3 bot.py
 ```
 
-### 3. Admin Commands
+### 3. Commands
 
 | Command | Description |
 |---|---|
-| `/start` | Onboarding — rules, recruitment, apply as INITIATE |
-| `/rules` | Show NULL//ORDER RULE #01 |
-| `/recruit` | Show NØ//RECRUITMENT listing |
-| `/calendar` | Today's content tasks |
-| `/post <type>` | Generate bulletin draft (`news`, `cve`, `research`, `lab`, `ctf`, `recruit`) |
-| `/promote <user_id> <role>` | Upgrade member role (tracked in DB) |
-| `/status [user_id]` | Show member role & task progress |
+| `/start` | INITIATE onboarding + Mini App button |
+| `/tools` | Open TON DNS TXT Mini App |
+| `/schema` | dns_text profile keys |
+| `/rules` | RULE #01 (testnet scope) |
+| `/recruit` | TON ecosystem recruitment |
+| `/calendar` | Today's TON content tasks |
+| `/post ton\|cve\|research\|build…` | Bulletin draft |
+| `/promote` / `/task` / `/status` | Roles & TON task tracking |
 
 ## Brand Voice
 
-- **Research-first**: case → principle → risk → lab repro → fix → defense
-- **Authorized only**: never position as an attack org
-- **Skill > Reputation**: promote on demonstrated work, not hype
+- **TON-native**: contracts, TVM, dns_text, Mini Apps — not generic web pentest
+- **Research-first**: testnet repro → fix → defense
+- **On-chain verify**: `.ton` + `dns_text` over self-claimed handles
+- **Authorized only**: mainnet requires explicit written scope
 
 ## License
 
-MIT — use and adapt for your authorized research community.
+MIT

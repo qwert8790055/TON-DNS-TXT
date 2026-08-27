@@ -2,9 +2,13 @@
 
 Severity: {{severity}}
 Component: {{component}}
+Network: {{network}}
 
 Summary
 {{summary}}
+
+Affected (TON)
+{{affected}}
 
 Impact
 {{impact}}
@@ -15,4 +19,4 @@ Mitigation
 References
 {{references}}
 
-— NULL//ORDER · NØ//BULLETIN
+— NULL//ORDER · TON Ecosystem · NØ//BULLETIN

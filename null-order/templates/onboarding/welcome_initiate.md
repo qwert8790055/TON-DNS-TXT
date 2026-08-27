@@ -1,14 +1,15 @@
-Welcome to NULL//ORDER — CORE
+Welcome to NULL//ORDER — CORE · TON Ecosystem
 
 You are registered as: INITIATE
 
 Before participating:
 1. Read NULL//ORDER RULE #01 (/rules)
-2. Introduce your focus area (web / RE / red team / intel / engineering)
-3. Complete assigned technical tasks for promotion
+2. Pick your TON focus: contracts / TVM / dns_text / Mini Apps / Jetton
+3. Bind .ton identity: /tools → write dns_text profile
+4. Complete TON technical tasks for promotion
 
-Promotion path: INITIATE → RESEARCHER / ENGINEER / OPERATOR / ANALYST
+Promotion: INITIATE → RESEARCHER / ENGINEER / BUILDER / OPERATOR / ANALYST
 
-Skill > Reputation. Show work, not hype.
+Skill > Reputation. Ship testnet work, not hype.
 
-— NØ//CORE
+— NØ//CORE · TON
