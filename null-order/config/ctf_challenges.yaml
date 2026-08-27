@@ -1,0 +1,75 @@
+# NULL//ORDER TON Testnet CTF Bank
+# All challenges: testnet / local lab only — RULE #01
+
+network: testnet
+version: "1.0"
+
+challenges:
+  DNS-001:
+    title: "Key Hash Discovery"
+    difficulty: easy
+    category: dns_text
+    points: 100
+    file: ctf/DNS-001.md
+    task_type: ton_ctf_solve
+    tags: [dns_text, sha256]
+
+  DNS-002:
+    title: "Decode the Cell"
+    difficulty: easy
+    category: dns_text
+    points: 150
+    file: ctf/DNS-002.md
+    task_type: ton_ctf_solve
+    tags: [dns_text, tvm, boc]
+
+  DNS-003:
+    title: "change_dns_record Forensics"
+    difficulty: medium
+    category: dns_text
+    points: 200
+    file: ctf/DNS-003.md
+    task_type: ton_ctf_solve
+    tags: [dns_text, opcodes]
+
+  ID-001:
+    title: "Bind Your .ton Identity"
+    difficulty: medium
+    category: identity
+    points: 250
+    file: ctf/ID-001.md
+    task_type: dns_text_profile
+    tags: [dns_text, nullorder, miniapp]
+
+  TVM-001:
+    title: "Dictionary Walk"
+    difficulty: medium
+    category: tvm
+    points: 200
+    file: ctf/TVM-001.md
+    task_type: ton_ctf_solve
+    tags: [tvm, hashmap]
+
+  CON-001:
+    title: "Jetton Transfer Auth Review"
+    difficulty: hard
+    category: contracts
+    points: 350
+    file: ctf/CON-001.md
+    task_type: contract_writeup
+    tags: [jetton, tep-74, auth]
+
+scoring:
+  initiate_promotion: 200  # min points OR 2 tasks (see roles.yaml)
+  leaderboard:
+    - DNS-001
+    - DNS-002
+    - DNS-003
+    - ID-001
+    - TVM-001
+    - CON-001
+
+submission:
+  format: markdown writeup
+  submit_to: "NØ//CORE · LAB / DEEP CORE"
+  admin_command: "/task <user_id> ton_ctf_solve <challenge_id>"

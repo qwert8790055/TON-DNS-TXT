@@ -65,7 +65,18 @@ python3 bot.py
 | `/recruit` | TON ecosystem recruitment |
 | `/calendar` | Today's TON content tasks |
 | `/post ton\|cve\|research\|build…` | Bulletin draft |
+| `/ctf [ID]` | List or show TON testnet CTF challenges |
+| `/research [001] [full]` | Research papers (NØ//RESEARCH series) |
 | `/promote` / `/task` / `/status` | Roles & TON task tracking |
+
+## Content
+
+| Path | Description |
+|---|---|
+| `content/research/RESEARCH-001.md` | TON DNS authorization boundary analysis |
+| `content/ctf/` | Testnet CTF challenges (DNS, TVM, Jetton) |
+| `content/launch/week-01.md` | First week operational playbook |
+| `config/ctf_challenges.yaml` | CTF bank index for bot `/ctf` |
 
 ## Brand Voice
 

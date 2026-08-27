@@ -17,6 +17,14 @@ from telegram.ext import (
 )
 
 from config_loader import load_dns_schema, load_roles, load_template, render_template
+from content_loader import (
+    get_challenge,
+    list_challenges,
+    load_challenge_body,
+    load_ctf_bank,
+    load_research,
+    research_summary,
+)
 from members import add_task, get_member, init_db, register_member, set_role, task_count
 from scheduler import calendar_tz, reminder_message, today_tasks
 
@@ -124,6 +132,83 @@ async def schema_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     lines.append("\n* required for dns_text verification")
     lines.append("\nWrite via /tools → TON DNS TXT Mini App")
     await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+
+
+def split_message(text: str, limit: int = 4000) -> list[str]:
+    if len(text) <= limit:
+        return [text]
+    parts: list[str] = []
+    while text:
+        parts.append(text[:limit])
+        text = text[limit:]
+    return parts
+
+
+async def send_long(message, text: str) -> None:
+    for chunk in split_message(text):
+        await message.reply_text(chunk, disable_web_page_preview=True)
+
+
+async def ctf_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not update.message:
+        return
+
+    if not context.args:
+        bank_network = load_ctf_bank().get("network", "testnet")
+        lines = [f"NØ//CTF · TON Testnet ({bank_network})\n"]
+        for cid, meta in list_challenges():
+            diff = meta.get("difficulty", "?")
+            pts = meta.get("points", 0)
+            title = meta.get("title", cid)
+            lines.append(f"• `{cid}` [{diff}] {pts}pt — {title}")
+        lines.append("\nUsage: /ctf DNS-001")
+        lines.append("Submit writeups to NØ//CORE · LAB / DEEP CORE")
+        await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+        return
+
+    query = context.args[0]
+    entry = get_challenge(query)
+    if not entry:
+        await update.message.reply_text(f"Challenge not found: {query}\nTry /ctf for list.")
+        return
+
+    cid, meta = entry
+    body = load_challenge_body(cid)
+    if not body:
+        await update.message.reply_text(f"Challenge file missing for {cid}.")
+        return
+
+    header = (
+        f"NØ//CTF · {cid}\n"
+        f"{meta.get('title', '')} · {meta.get('difficulty', '')} · {meta.get('points', 0)}pt\n"
+        f"Network: {load_ctf_bank().get('network', 'testnet')}\n\n"
+    )
+    await send_long(update.message, header + body)
+
+
+async def research_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if not update.message:
+        return
+
+    number = "001"
+    full = False
+    if context.args:
+        if context.args[0].lower() == "full":
+            full = True
+            if len(context.args) > 1:
+                number = context.args[1]
+        else:
+            number = context.args[0]
+            full = len(context.args) > 1 and context.args[1].lower() == "full"
+
+    if full:
+        text = load_research(number)
+        if not text:
+            await update.message.reply_text(f"RESEARCH-{number} not found.")
+            return
+        await send_long(update.message, text)
+    else:
+        await update.message.reply_text(research_summary(number), disable_web_page_preview=True)
 
 
 async def recruit_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -386,6 +471,8 @@ def main() -> None:
     application.add_handler(CommandHandler("schema", schema_cmd))
     application.add_handler(CommandHandler("rules", rules_cmd))
     application.add_handler(CommandHandler("recruit", recruit_cmd))
+    application.add_handler(CommandHandler("ctf", ctf_cmd))
+    application.add_handler(CommandHandler("research", research_cmd))
     application.add_handler(CommandHandler("calendar", calendar_cmd))
     application.add_handler(CommandHandler("post", post_cmd))
     application.add_handler(CommandHandler("publish", publish_cmd))
