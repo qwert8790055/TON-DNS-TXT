@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { router as domainsRouter } from './routes/domains';
 import { router as dnsRecordsRouter } from './routes/dnsRecords';
-import { router as estimateFeeRouter } from './routes/estimateFee';
 
 dotenv.config();
 
@@ -20,7 +19,6 @@ app.use((_, res, next) => {
 
 app.use('/api', domainsRouter);
 app.use('/api', dnsRecordsRouter);
-app.use('/api', estimateFeeRouter);
 
 app.listen(PORT, () => {
   console.log(`dns-text-api listening on port ${PORT}`);
