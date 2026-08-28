@@ -5,3 +5,6 @@ dist/
 .DS_Store
 *.tsbuildinfo
 server/dist/
+venv/
+__pycache__/
+*.pyc
