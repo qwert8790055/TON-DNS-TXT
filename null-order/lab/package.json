@@ -1,0 +1,9 @@
+{
+  "name": "null-order-lab",
+  "private": true,
+  "type": "module",
+  "description": "NULL//ORDER testnet lab scripts — TESTNET ONLY",
+  "dependencies": {
+    "@ton/core": "^0.63.0"
+  }
+}

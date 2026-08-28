@@ -39,7 +39,17 @@ Any sender can drain contract balance on testnet lab instance.
 ## CTF
 
 - **LAB-001**: Exploit + write fix → `content/ctf/LAB-001.md`
-- **CON-001**: Jetton audit (optional; use lab vault as simpler alternative)
+- **CON-001**: Jetton audit (optional alternative to lab vault)
+
+### Exploit helper (testnet)
+
+```bash
+cd null-order/lab
+npm install
+node scripts/exploit_withdraw.mjs <LAB_ADDRESS> <YOUR_WALLET> 0.05
+```
+
+Use output BOC as message body when sending tx to lab contract.
 
 ## Fix Pattern
 
