@@ -121,5 +121,14 @@ Minimum 2 tasks before promotion (configurable in `roles.yaml`).
 | Telegram Bot (legacy DNS tool) | `/bot` |
 | NULL//ORDER community bot | `/null-order/bot` |
 | On-chain profile schema | `/null-order/config/dns_text_schema.yaml` |
+| Testnet lab contracts | `/null-order/lab/` |
+| RESEARCH series | `/null-order/content/research/` |
 
 Launch Mini App from NULL//ORDER bot via `/tools` or the `/start` inline button.
+
+### Research Series
+
+| ID | Topic |
+|---|---|
+| RESEARCH-001 | TON DNS read/write authorization boundary |
+| RESEARCH-002 | Mini App × TonConnect × .ton domain binding |

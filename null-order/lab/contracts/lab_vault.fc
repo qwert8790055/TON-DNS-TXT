@@ -1,0 +1,68 @@
+;; NULL//ORDER Lab Vault — TESTNET ONLY
+;; Intentional missing sender check on withdraw for authorized lab use.
+;; DO NOT deploy on mainnet.
+
+#include "stdlib.fc";
+
+const int op::deposit = 0x1001;
+const int op::withdraw = 0x1002;
+
+(slice) load_owner() inline {
+    slice ds = get_data().begin_parse();
+    return ds~load_msg_addr();
+}
+
+() save_owner(slice owner) impure inline {
+    set_data(begin_cell().store_slice(owner).end_cell());
+}
+
+() recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
+    slice cs = in_msg_full.begin_parse();
+    int flags = cs~load_uint(4);
+
+    if (flags & 1) {
+        return ();
+    }
+
+    slice sender_address = cs~load_msg_addr();
+    slice owner = load_owner();
+
+    ;; Empty body: accept incoming TON as deposit
+    if (in_msg_body.slice_empty?()) {
+        return ();
+    }
+
+    int op = in_msg_body~load_uint(32);
+
+    if (op == op::deposit) {
+        return ();
+    }
+
+    if (op == op::withdraw) {
+        int amount = in_msg_body~load_coins();
+        slice dest = in_msg_body~load_msg_addr();
+
+        ;; LAB VULNERABILITY: sender is NOT compared to owner.
+        ;; Fixed version:
+        ;; throw_unless(403, equal_slice_bits(sender_address, owner));
+
+        var msg = begin_cell()
+            .store_uint(0x18, 6)
+            .store_slice(dest)
+            .store_coins(amount)
+            .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+            .end_cell();
+        send_raw_message(msg, 1);
+        return ();
+    }
+
+    throw(0xffff);
+}
+
+slice owner() method_id {
+    return load_owner();
+}
+
+int balance() method_id {
+    return get_balance().pair_first();
+}

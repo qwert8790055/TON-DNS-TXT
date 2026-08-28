@@ -73,10 +73,13 @@ python3 bot.py
 
 | Path | Description |
 |---|---|
-| `content/research/RESEARCH-001.md` | TON DNS authorization boundary analysis |
-| `content/ctf/` | Testnet CTF challenges (DNS, TVM, Jetton) |
-| `content/launch/week-01.md` | First week operational playbook |
-| `config/ctf_challenges.yaml` | CTF bank index for bot `/ctf` |
+| `content/research/RESEARCH-001.md` | TON DNS authorization boundary |
+| `content/research/RESEARCH-002.md` | Mini App × TonConnect × domain binding |
+| `content/ctf/` | Testnet CTF (DNS, TVM, Lab Vault, Jetton) |
+| `content/launch/week-01.md` | First week playbook |
+| `content/launch/week-02.md` | Lab Vault deploy + RESEARCH-002 |
+| `config/ctf_challenges.yaml` | CTF bank index |
+| `lab/` | Testnet lab contracts (`lab_vault.fc`) + deploy guide |
 
 ## Brand Voice
 

@@ -59,6 +59,16 @@ challenges:
     task_type: contract_writeup
     tags: [jetton, tep-74, auth]
 
+  LAB-001:
+    title: "Lab Vault Authorization Bypass"
+    difficulty: medium
+    category: contracts
+    points: 300
+    file: ctf/LAB-001.md
+    task_type: ton_ctf_solve
+    tags: [func, testnet, auth]
+    lab_contract: lab/contracts/lab_vault.fc
+
 scoring:
   initiate_promotion: 200  # min points OR 2 tasks (see roles.yaml)
   leaderboard:
@@ -67,6 +77,7 @@ scoring:
     - DNS-003
     - ID-001
     - TVM-001
+    - LAB-001
     - CON-001
 
 submission:
