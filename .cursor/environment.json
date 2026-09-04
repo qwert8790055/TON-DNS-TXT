@@ -1,0 +1,18 @@
+{
+  "name": "TON DNS TXT",
+  "install": "bash .cursor/install.sh",
+  "terminals": [
+    {
+      "name": "api-server",
+      "command": "cd server && node dist/index.js"
+    },
+    {
+      "name": "web-client",
+      "command": "cd client && npm run dev -- --host"
+    }
+  ],
+  "ports": [
+    { "name": "api", "port": 4727 },
+    { "name": "web", "port": 5173 }
+  ]
+}
