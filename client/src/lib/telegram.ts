@@ -51,17 +51,25 @@ const tg: TelegramWebApp | undefined =
 
 export const isTelegram = !!tg;
 
-export function tgReady(): void { tg?.ready(); }
-export function tgExpand(): void { tg?.expand(); }
-export function tgRequestFullscreen(): void { tg?.requestFullscreen?.(); }
-export function tgSetBottomBarColor(color: string): void { tg?.setBottomBarColor?.(color); }
-export function tgSetBackgroundColor(color: string): void { tg?.setBackgroundColor?.(color); }
+// The telegram-web-app.js shim is always present once index.html loads it, even
+// on a plain web page, but many methods throw WebAppMethodUnsupported when the
+// page is not actually running inside a recent Telegram client. Swallow those
+// errors so an unsupported optional method can never crash the React tree.
+function safe(fn: () => void): void {
+  try { fn(); } catch { /* method unsupported outside Telegram — ignore */ }
+}
+
+export function tgReady(): void { safe(() => tg?.ready()); }
+export function tgExpand(): void { safe(() => tg?.expand()); }
+export function tgRequestFullscreen(): void { safe(() => tg?.requestFullscreen?.()); }
+export function tgSetBottomBarColor(color: string): void { safe(() => tg?.setBottomBarColor?.(color)); }
+export function tgSetBackgroundColor(color: string): void { safe(() => tg?.setBackgroundColor?.(color)); }
 
 export const BackButton = {
-  show: () => tg?.BackButton.show(),
-  hide: () => tg?.BackButton.hide(),
-  onClick: (fn: () => void) => tg?.BackButton.onClick(fn),
-  offClick: (fn: () => void) => tg?.BackButton.offClick(fn),
+  show: () => safe(() => tg?.BackButton.show()),
+  hide: () => safe(() => tg?.BackButton.hide()),
+  onClick: (fn: () => void) => safe(() => tg?.BackButton.onClick(fn)),
+  offClick: (fn: () => void) => safe(() => tg?.BackButton.offClick(fn)),
 };
 
 export const MainButton = {
