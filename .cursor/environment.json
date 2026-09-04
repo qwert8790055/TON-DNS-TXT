@@ -1,0 +1,14 @@
+{
+  "name": "TON DNS TXT",
+  "install": "bash .cursor/install.sh",
+  "terminals": [
+    {
+      "name": "server",
+      "command": "cd server && node dist/index.js"
+    },
+    {
+      "name": "client",
+      "command": "cd client && npm run dev"
+    }
+  ]
+}

@@ -11,6 +11,8 @@ declare global {
 }
 
 interface TelegramWebApp {
+  platform?: string;
+  initData?: string;
   ready: () => void;
   expand: () => void;
   requestFullscreen?: () => void;
@@ -46,8 +48,18 @@ interface TelegramWebApp {
   };
 }
 
-const tg: TelegramWebApp | undefined =
+// telegram-web-app.js is loaded unconditionally from index.html, so it injects a
+// window.Telegram.WebApp object even in a plain browser. Outside a real Telegram
+// client that object reports platform 'unknown' and empty initData, and calling
+// methods like requestFullscreen() throws WebAppMethodUnsupported. Only treat this
+// as a real Telegram client when a concrete platform is present, so every helper
+// below stays a genuine no-op on the open web (matching this module's contract).
+const rawTg: TelegramWebApp | undefined =
   typeof window !== 'undefined' ? window.Telegram?.WebApp : undefined;
+
+const isRealTelegram = !!rawTg && !!rawTg.platform && rawTg.platform !== 'unknown';
+
+const tg: TelegramWebApp | undefined = isRealTelegram ? rawTg : undefined;
 
 export const isTelegram = !!tg;
 
