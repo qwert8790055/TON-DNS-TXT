@@ -10,3 +10,8 @@ server/dist/
 bot/venv/
 __pycache__/
 *.pyc
+
+# iOS RE / 破甲 toolchain (generated)
+ios-re/venv/
+ios-re/tools/
+null-order/mobile/pojia/artifacts/

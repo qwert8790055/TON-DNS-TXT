@@ -31,4 +31,7 @@ python3 -m venv venv
 ./venv/bin/pip install --upgrade pip
 ./venv/bin/pip install -r requirements.txt
 
+# --- iOS 破甲行动 toolchain (authorized mobile assessment) ---
+bash "$repo_root/.cursor/ios-re-install.sh"
+
 echo "install.sh completed"
