@@ -408,9 +408,17 @@ cd null-order/mobile/pojia
 REPORT_EOF
 
 log "Report written: $REPORT_FILE"
+
+# ── Auto-save operation data ───────────────────────────────────────────────────
+if [ -x "$SCRIPT_DIR/save_data.sh" ]; then
+  log "Saving operation data..."
+  "$SCRIPT_DIR/save_data.sh" "$OPERATION_ID" 2>&1 | sed 's/^/  /' || log "WARN: save_data failed"
+fi
+
 echo ""
 echo "╔══════════════════════════════════════════════════════════╗"
 echo "║  OPERATION 破甲 COMPLETE                                 ║"
-echo "║  Report: $REPORT_FILE"
+echo "║  Report:   $REPORT_FILE"
 echo "║  Artifacts: $ARTIFACT_DIR/$OPERATION_ID/"
+echo "║  Archive:  $SCRIPT_DIR/data/archive/${OPERATION_ID}.tar.gz"
 echo "╚══════════════════════════════════════════════════════════╝"

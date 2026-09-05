@@ -1,0 +1,20 @@
+{
+  "operations": [
+    {
+      "operation_id": "POJIA-20260905-140609",
+      "saved_at": "2026-09-05T14:06:10+00:00",
+      "archive": "POJIA-20260905-140609.tar.gz",
+      "device_connected": false,
+      "report": "NØ-OPERATION-破甲-POJIA-20260905-140609.md"
+    },
+    {
+      "operation_id": "POJIA-20260905-140607",
+      "saved_at": "2026-09-05T14:06:08+00:00",
+      "archive": "POJIA-20260905-140607.tar.gz",
+      "device_connected": false,
+      "report": "NØ-OPERATION-破甲-POJIA-20260905-140607.md"
+    }
+  ],
+  "last_saved": "POJIA-20260905-140609",
+  "updated_at": "2026-09-05T14:06:10+00:00"
+}

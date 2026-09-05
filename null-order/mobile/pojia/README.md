@@ -7,12 +7,36 @@
 ## 快速开始
 
 ```bash
-# 离线模式（生成战术报告，无需设备）
-./armor_break.sh --dry-run
+# 自动执行 + 保存数据（推荐）
+./auto_run.sh
 
-# 实弹模式（需越狱 iPhone USB 连接 + frida-server）
-./armor_break.sh -t "AppDisplayName" -b com.example.bundleid
+# 指定目标 + 自动保存
+./auto_run.sh -t "AppDisplayName" -b com.example.bundleid
+
+# 监视模式：每 60 秒检测设备并重跑
+./auto_run.sh --watch 60
+
+# 手动执行
+./armor_break.sh --dry-run
 ```
+
+## 数据保存
+
+每次行动结束后自动归档至 `data/`：
+
+```
+data/
+├── index.json          # 行动索引（提交到 git）
+├── latest/             # 最近一次快照（gitignored）
+│   ├── manifest.json
+│   ├── 01_recon.txt … 05_static_triage.txt
+│   ├── report.md
+│   └── test_result.log
+└── archive/            # 历史压缩包（gitignored）
+    └── POJIA-*.tar.gz
+```
+
+手动保存：`./save_data.sh POJIA-20260905-140111`
 
 ## 目录结构
 
