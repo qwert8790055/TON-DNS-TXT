@@ -11,6 +11,7 @@ declare global {
 }
 
 interface TelegramWebApp {
+  platform?: string;
   ready: () => void;
   expand: () => void;
   requestFullscreen?: () => void;
@@ -46,8 +47,18 @@ interface TelegramWebApp {
   };
 }
 
-const tg: TelegramWebApp | undefined =
+// telegram-web-app.js injects window.Telegram.WebApp even in a regular browser,
+// so the object alone is not proof we're inside Telegram. A real mini-app reports
+// a concrete platform (e.g. "tdesktop", "ios"); outside Telegram it is "unknown".
+// Gating on this keeps every wrapper below a safe no-op in the browser and avoids
+// calling Telegram-only APIs (e.g. requestFullscreen) that throw WebAppMethodNotSupported.
+const injectedTg: TelegramWebApp | undefined =
   typeof window !== 'undefined' ? window.Telegram?.WebApp : undefined;
+
+const tg: TelegramWebApp | undefined =
+  injectedTg && injectedTg.platform && injectedTg.platform !== 'unknown'
+    ? injectedTg
+    : undefined;
 
 export const isTelegram = !!tg;
 
