@@ -44,6 +44,59 @@ SCAM_AMOUNT="${SCAM_AMOUNT:-未提供}"
 SCAM_PAYMENT="${SCAM_PAYMENT:-未提供}"
 SCAM_CONTACT="${SCAM_CONTACT:-未提供}"
 SCAM_STORY="${SCAM_STORY:-未提供}"
+SCAM_TYPE="${SCAM_TYPE:-通用}"
+ICLOUD_LOCK="${ICLOUD_LOCK:-未说明}"
+DEVICE_SOURCE="${DEVICE_SOURCE:-未说明}"
+APPLE_ID_OWNER="${APPLE_ID_OWNER:-未说明}"
+
+# ID锁套路专项段落
+ID_LOCK_SECTION=""
+if [ "$SCAM_TYPE" = "ID锁套路" ] || echo "$SCAM_DOWNLOAD$SCAM_SCRIPT$SCAM_STORY" | grep -qiE 'ID锁|id锁|激活锁|iCloud|爱思|企业签'; then
+  ID_LOCK_SECTION="
+---
+
+## 3.5 ID锁 / 爱思助手套路解析（重点）
+
+这是 iOS 诈骗中极常见的组合套路：
+
+### 套路链条
+
+\`\`\`
+低价二手有锁机 / 借用他人 Apple ID
+        ↓
+爱思助手 / 企业签 安装涉诈 App（绕过 App Store）
+        ↓
+前期小额提现成功 → 建立信任（杀猪盘养熟）
+        ↓
+大额提现被拒 → 流水不足 / 保证金 / 税费
+        ↓
+若尝试刷机/越狱失败 → ID锁激活 → 手机变砖
+        ↓
+卖家/平台消失，钱和手机两空
+\`\`\`
+
+### 你的情况记录
+
+| 项目 | 内容 |
+|---|---|
+| 是否遇 ID锁 | ${ICLOUD_LOCK} |
+| 设备来源 | ${DEVICE_SOURCE} |
+| Apple ID 归属 | ${APPLE_ID_OWNER} |
+
+### 关键事实
+
+1. **ID锁只能由原 Apple ID 主人解除**，没有合法「黑客解锁」
+2. **爱思助手安装的 App 很多未上架**，含博彩/杀猪盘高发
+3. **别人的 Apple ID** = 对方随时可远程锁机
+4. 任何收「解锁费」「保证金」的都是**二次诈骗**
+
+### 你能做的（合法）
+
+- 保留购买记录、聊天记录、转账凭证 → **报警**
+- 向 Apple 举报涉诈 App
+- **不要**再向任何人付解锁费/解冻费
+"
+fi
 
 mkdir -p "$REPORT_DIR" "$DATA_DIR/scam_cases"
 
@@ -121,6 +174,8 @@ ${SCAM_STORY}
 | 风控审核 / 账户异常 | ${MATCH_AUDIT} | 拖延出款 |
 | 信任充值（前期小额可提） | 需人工确认 | 杀猪盘养熟阶段 |
 
+${ID_LOCK_SECTION}
+
 ---
 
 ## 4. 技术侧说明（无需破甲他人设备）
@@ -160,16 +215,17 @@ ${SCAM_STORY}
 
 ## 6. 公众警示（可直接转发）
 
-```
+---
 ⚠️ 警惕「${SCAM_APP_NAME}」类诈骗 App
 
 特征：
-· 前期小额提现成功，建立信任
-· 大额提现时以「流水不足」「保证金」「税费」等理由拒付
-· 通过非 App Store 渠道安装（企业签名/第三方助手）
+- 通过爱思助手/企业签安装，非 App Store 正规渠道
+- 使用他人 Apple ID 或二手有锁机，存在 ID锁 风险
+- 前期小额提现成功，建立信任
+- 大额提现时以「流水不足」「保证金」「ID解锁费」等理由拒付或继续要钱
 
-请勿继续转账。已受骗请保留证据报警。
-```
+请勿继续转账。已受骗请保留证据报警（96110）。
+---
 
 ---
 
