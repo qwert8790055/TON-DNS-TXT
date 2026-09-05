@@ -1,6 +1,10 @@
 {
   "name": "TON DNS TXT",
   "install": "bash .cursor/install.sh",
+  "ports": [
+    { "name": "api", "port": 4727 },
+    { "name": "client", "port": 5173 }
+  ],
   "terminals": [
     {
       "name": "server",
