@@ -18,8 +18,17 @@ DUMP_DIR="$REPO_ROOT/ios-re/tools/frida-ios-dump"
 
 TARGET_NAME=""
 TARGET_BUNDLE=""
+DEVICE_HOST=""
+FRIDA_PORT=27042
 DRY_RUN=0
 OPERATION_ID="POJIA-$(date +%Y%m%d-%H%M%S)"
+
+# Load config.env
+CONFIG="$SCRIPT_DIR/config.env"
+if [ -f "$CONFIG" ]; then
+  # shellcheck disable=SC1090
+  source "$CONFIG"
+fi
 
 usage() {
   cat <<'EOF'
@@ -30,6 +39,7 @@ OPERATION 破甲 — iOS Mobile Red Team Armor-Break
 Options:
   -t NAME       Target app display name (for frida-ios-dump)
   -b BUNDLE     Target bundle ID (for objection/frida)
+  --host IP     WiFi mode: connect via device IP (no USB)
   --dry-run     Skip device ops; generate methodology report only
   -h            Show help
 
@@ -41,6 +51,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     -t) TARGET_NAME="$2"; shift 2 ;;
     -b) TARGET_BUNDLE="$2"; shift 2 ;;
+    --host) DEVICE_HOST="$2"; DRY_RUN=0; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1"; usage; exit 1 ;;
@@ -95,6 +106,7 @@ else
     JAILBROKEN=$(ideviceinfo -k PasswordProtected 2>/dev/null || echo "unknown")
 
     {
+      echo "Mode: USB"
       echo "UUID: $DEVICE_UUID"
       echo "Name: $DEVICE_NAME"
       echo "iOS: $IOS_VERSION"
@@ -108,6 +120,18 @@ else
     } >> "$recon_file"
 
     log "Device: $DEVICE_NAME / iOS $IOS_VERSION"
+  elif [ -n "$DEVICE_HOST" ]; then
+    log "WiFi mode: $DEVICE_HOST"
+    {
+      echo "Mode: WiFi"
+      echo "IP: $DEVICE_HOST"
+      echo "Frida port: $FRIDA_PORT"
+      echo ""
+      echo "--- frida-ps remote ---"
+      frida-ps -H "$DEVICE_HOST:$FRIDA_PORT" 2>/dev/null | head -20 || echo "frida-ps failed"
+    } >> "$recon_file"
+    DEVICE_NAME="WiFi-$DEVICE_HOST"
+    IOS_VERSION="remote"
   else
     log "WARNING: No device detected — continuing in offline mode"
     echo "Device: NONE" >> "$recon_file"
@@ -182,13 +206,21 @@ for hook in jailbreak_bypass ssl_pinning_bypass anti_debug_bypass; do
   fi
 done
 
-if [ "$DRY_RUN" -eq 0 ] && [ -n "$DEVICE_UUID" ]; then
-  log "Starting iproxy 2222→22 for SSH tunnel"
-  pkill -f "iproxy 2222 22" 2>/dev/null || true
-  iproxy 2222 22 &
-  IPROXY_PID=$!
-  sleep 1
-  echo "iproxy PID: $IPROXY_PID" >> "$break_file"
+if [ "$DRY_RUN" -eq 0 ] && { [ -n "$DEVICE_UUID" ] || [ -n "$DEVICE_HOST" ]; }; then
+  FRIDA_TARGET=""
+  if [ -n "$DEVICE_HOST" ]; then
+    FRIDA_TARGET="-H $DEVICE_HOST:$FRIDA_PORT"
+    log "WiFi Frida target: $DEVICE_HOST:$FRIDA_PORT"
+    echo "Mode: WiFi $DEVICE_HOST" >> "$break_file"
+  else
+    log "Starting iproxy 2222→22 for SSH tunnel"
+    pkill -f "iproxy 2222 22" 2>/dev/null || true
+    iproxy 2222 22 &
+    IPROXY_PID=$!
+    sleep 1
+    echo "iproxy PID: $IPROXY_PID" >> "$break_file"
+    FRIDA_TARGET="-U"
+  fi
 
   if [ -n "$TARGET_BUNDLE" ]; then
     log "Injecting armor-break hooks into $TARGET_BUNDLE"
@@ -196,14 +228,17 @@ if [ "$DRY_RUN" -eq 0 ] && [ -n "$DEVICE_UUID" ]; then
     for h in "${HOOKS_LOADED[@]}"; do
       HOOK_ARGS="$HOOK_ARGS -l $HOOKS_DIR/${h}.js"
     done
-    timeout 10 frida -U -f "$TARGET_BUNDLE" $HOOK_ARGS --no-pause 2>&1 | tee -a "$break_file" || {
-      echo "[!] Frida spawn failed — device may need frida-server or app not installed" >> "$break_file"
+    # shellcheck disable=SC2086
+    timeout 15 frida $FRIDA_TARGET -f "$TARGET_BUNDLE" $HOOK_ARGS 2>&1 | tee -a "$break_file" || {
+      echo "[!] Frida spawn failed — check frida-server version / app installed" >> "$break_file"
     }
   fi
 
   if [ -n "$TARGET_NAME" ] && [ -f "$DUMP_DIR/dump.py" ]; then
     log "Attempting IPA dump: $TARGET_NAME"
-    (cd "$DUMP_DIR" && python dump.py "$TARGET_NAME" 2>&1) | tee -a "$break_file" || {
+    DUMP_ARGS=()
+    [ -n "$DEVICE_HOST" ] && DUMP_ARGS=(-H "$DEVICE_HOST")
+    (cd "$DUMP_DIR" && python dump.py "${DUMP_ARGS[@]}" "$TARGET_NAME" 2>&1) | tee -a "$break_file" || {
       echo "[!] Dump failed — ensure frida-server matches host frida version" >> "$break_file"
     }
   fi

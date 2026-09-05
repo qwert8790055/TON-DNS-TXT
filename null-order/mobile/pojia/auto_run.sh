@@ -37,34 +37,46 @@ run_once() {
   echo "║  破甲自动运行  $(date '+%Y-%m-%d %H:%M:%S')                       ║"
   echo "╚══════════════════════════════════════════════════════════╝"
 
-  # Detect device
+  # Detect device: USB first, then WiFi (config.env DEVICE_IP)
   UUID=$(idevice_id -l 2>/dev/null | head -1 || true)
+  DEVICE_HOST="${DEVICE_IP:-}"
+
   if [ -n "$UUID" ]; then
-    echo "[auto] 设备已连接: $UUID"
+    echo "[auto] USB 设备已连接: $UUID"
     ARGS=()
     [ -n "$TARGET_NAME" ] && ARGS+=(-t "$TARGET_NAME")
     [ -n "$TARGET_BUNDLE" ] && ARGS+=(-b "$TARGET_BUNDLE")
     "$SCRIPT_DIR/armor_break.sh" "${ARGS[@]}"
+  elif [ -n "$DEVICE_HOST" ]; then
+    echo "[auto] WiFi 模式 → $DEVICE_HOST"
+    if "$SCRIPT_DIR/connect.sh" "$DEVICE_HOST"; then
+      ARGS=(--host "$DEVICE_HOST")
+      [ -n "$TARGET_NAME" ] && ARGS+=(-t "$TARGET_NAME")
+      [ -n "$TARGET_BUNDLE" ] && ARGS+=(-b "$TARGET_BUNDLE")
+      "$SCRIPT_DIR/armor_break.sh" "${ARGS[@]}"
+    else
+      echo "[auto] WiFi 连接失败 — 离线模式"
+      ARGS=(--dry-run)
+      [ -n "$TARGET_NAME" ] && ARGS+=(-t "$TARGET_NAME")
+      [ -n "$TARGET_BUNDLE" ] && ARGS+=(-b "$TARGET_BUNDLE")
+      "$SCRIPT_DIR/armor_break.sh" "${ARGS[@]}"
+    fi
   else
-    echo "[auto] 无设备 — 离线模式执行"
+    echo "[auto] 无设备 — 离线模式（填入 config.env DEVICE_IP 可 WiFi 接上）"
     ARGS=(--dry-run)
     [ -n "$TARGET_NAME" ] && ARGS+=(-t "$TARGET_NAME")
     [ -n "$TARGET_BUNDLE" ] && ARGS+=(-b "$TARGET_BUNDLE")
     "$SCRIPT_DIR/armor_break.sh" "${ARGS[@]}"
   fi
 
-  # Extract operation ID from latest report
+  # armor_break.sh already calls save_data.sh at end
+  # Extract operation ID for summary
   LATEST_REPORT=$(ls -t "$SCRIPT_DIR/../../reports"/NØ-OPERATION-破甲-POJIA-*.md 2>/dev/null | head -1)
   OP_ID=$(basename "$LATEST_REPORT" .md | sed 's/NØ-OPERATION-破甲-//')
 
-  if [ -n "$OP_ID" ]; then
-    echo "[auto] 保存数据: $OP_ID"
-    "$SCRIPT_DIR/save_data.sh" "$OP_ID"
-  fi
-
-  # Run host tests and append result to latest data
+  # Run host tests (skip armor_break dry-run to avoid duplicate ops)
   echo "[auto] 运行主机测试..."
-  bash "$SCRIPT_DIR/test_host.sh" > "$SCRIPT_DIR/data/latest/test_result.log" 2>&1 || true
+  bash "$SCRIPT_DIR/test_host.sh" --quick > "$SCRIPT_DIR/data/latest/test_result.log" 2>&1 || true
 
   echo ""
   echo "[auto] 数据已保存至: $SCRIPT_DIR/data/"
