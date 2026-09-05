@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Risk Control Dashboard / Bảng Kiểm Soát Rủi Ro</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --surface2: #243044;
+      --border: #2d3a4f;
+      --text: #e8edf4;
+      --muted: #8b9cb3;
+      --accent: #3b82f6;
+      --low: #22c55e;
+      --medium: #eab308;
+      --high: #f97316;
+      --critical: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f1419 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    header h1 { font-size: 1.35rem; font-weight: 600; }
+    header p { color: var(--muted); font-size: 0.85rem; margin-top: 0.15rem; }
+    .controls { display: flex; gap: 0.5rem; align-items: center; }
+    .controls input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      width: 280px;
+      font-size: 0.85rem;
+    }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    button:hover { opacity: 0.9; }
+    button.secondary { background: var(--surface2); border: 1px solid var(--border); }
+    main { padding: 1.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+    .stat-card .label { color: var(--muted); font-size: 0.8rem; }
+    .stat-card .value { font-size: 1.75rem; font-weight: 700; margin-top: 0.25rem; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    section h2 {
+      font-size: 0.95rem;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      font-weight: 600;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { padding: 0.65rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(59, 130, 246, 0.05); }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge.low { background: rgba(34, 197, 94, 0.15); color: var(--low); }
+    .badge.medium { background: rgba(234, 179, 8, 0.15); color: var(--medium); }
+    .badge.high { background: rgba(249, 115, 22, 0.15); color: var(--high); }
+    .badge.critical { background: rgba(239, 68, 68, 0.15); color: var(--critical); }
+    .score-bar {
+      width: 60px;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    .score-bar span {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+    }
+    .flags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem; }
+    .flag {
+      background: rgba(239, 68, 68, 0.1);
+      color: #fca5a5;
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+    .empty { padding: 2rem; text-align: center; color: var(--muted); }
+    .error-banner {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .loading { opacity: 0.5; pointer-events: none; }
+    .amount { font-variant-numeric: tabular-nums; }
+    .mono { font-family: 'SF Mono', Consolas, monospace; font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Risk Control Dashboard</h1>
+      <p>Bảng kiểm soát rủi ro thiết bị & giao dịch</p>
+    </div>
+    <div class="controls">
+      <input id="apiBase" type="text" value="http://localhost:8080/api.php" placeholder="API URL" />
+      <button id="refreshBtn">Refresh / Làm mới</button>
+      <button id="langBtn" class="secondary">VI / EN</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="errorBanner" class="error-banner"></div>
+    <div id="statsRow" class="stats"></div>
+
+    <div class="grid-2">
+      <section>
+        <h2 id="devicesTitle">Device Risk Ranking / Xếp hạng rủi ro thiết bị</h2>
+        <div id="devicesTable"></div>
+      </section>
+      <section>
+        <h2 id="accessTitle">Accessibility Alerts / Cảnh báo trợ năng</h2>
+        <div id="accessTable"></div>
+      </section>
+    </div>
+
+    <section>
+      <h2 id="txTitle">Transaction Risk Timeline / Dòng thời gian giao dịch</h2>
+      <div id="txTable"></div>
+    </section>
+  </main>
+
+  <script>
+    const I18N = {
+      en: {
+        devices: 'devices', transactions: 'transactions',
+        suspicious: 'suspicious services', highRiskTx: 'high-risk tx',
+        noData: 'No data yet', device: 'Device', model: 'Model',
+        risk: 'Risk', lastSeen: 'Last Seen', package: 'Package',
+        service: 'Service', suspiciousCol: 'Suspicious', reported: 'Reported',
+        amount: 'Amount', recipient: 'Recipient', bank: 'Bank', time: 'Time',
+        flags: 'Risk Flags', fetchError: 'Failed to fetch dashboard data',
+      },
+      vi: {
+        devices: 'thiết bị', transactions: 'giao dịch',
+        suspicious: 'dịch vụ đáng ngờ', highRiskTx: 'GD rủi ro cao',
+        noData: 'Chưa có dữ liệu', device: 'Thiết bị', model: 'Model',
+        risk: 'Rủi ro', lastSeen: 'Lần cuối', package: 'Gói',
+        service: 'Dịch vụ', suspiciousCol: 'Đáng ngờ', reported: 'Báo cáo',
+        amount: 'Số tiền', recipient: 'Người nhận', bank: 'Ngân hàng', time: 'Thời gian',
+        flags: 'Cờ rủi ro', fetchError: 'Không thể tải dữ liệu bảng điều khiển',
+      },
+    };
+
+    let lang = 'vi';
+
+    function t(key) { return I18N[lang][key] || key; }
+
+    function levelBadge(level) {
+      const l = (level || 'low').toLowerCase();
+      return `<span class="badge ${l}">${l}</span>`;
+    }
+
+    function scoreBar(score) {
+      const s = Math.min(100, Math.max(0, score || 0));
+      let color = 'var(--low)';
+      if (s >= 70) color = 'var(--critical)';
+      else if (s >= 50) color = 'var(--high)';
+      else if (s >= 30) color = 'var(--medium)';
+      return `<span class="score-bar"><span style="width:${s}%;background:${color}"></span></span>${s}`;
+    }
+
+    function formatAmount(amount, currency) {
+      const n = Number(amount);
+      if (currency === 'VND') return n.toLocaleString('vi-VN') + ' ₫';
+      return n.toLocaleString() + ' ' + (currency || '');
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorBanner');
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('errorBanner').style.display = 'none';
+    }
+
+    function renderStats(stats) {
+      const items = [
+        { label: t('devices'), value: stats.device_count || 0 },
+        { label: t('transactions'), value: stats.transaction_count || 0 },
+        { label: t('suspicious'), value: stats.suspicious_access_count || 0 },
+        { label: t('highRiskTx'), value: stats.high_risk_tx_count || 0 },
+      ];
+      document.getElementById('statsRow').innerHTML = items.map(i =>
+        `<div class="stat-card"><div class="label">${i.label}</div><div class="value">${i.value}</div></div>`
+      ).join('');
+    }
+
+    function renderDevices(devices) {
+      if (!devices.length) {
+        document.getElementById('devicesTable').innerHTML = `<div class="empty">${t('noData')}</div>`;
+        return;
+      }
+      const rows = devices.map(d => `<tr>
+        <td class="mono">${d.device_id}</td>
+        <td>${d.model || '—'}</td>
+        <td>${scoreBar(d.risk_score)} ${levelBadge(d.risk_level)}</td>
+        <td>${d.last_seen || '—'}</td>
+      </tr>`).join('');
+      document.getElementById('devicesTable').innerHTML = `<table>
+        <thead><tr><th>${t('device')}</th><th>${t('model')}</th><th>${t('risk')}</th><th>${t('lastSeen')}</th></tr></thead>
+        <tbody>${rows}</tbody></table>`;
+    }
+
+    function renderAccess(services) {
+      if (!services.length) {
+        document.getElementById('accessTable').innerHTML = `<div class="empty">${t('noData')}</div>`;
+        return;
+      }
+      const rows = services.map(s => `<tr>
+        <td class="mono">${s.device_id}</td>
+        <td class="mono">${s.package_name || '—'}</td>
+        <td>${s.is_suspicious ? '<span class="badge critical">YES</span>' : '<span class="badge low">no</span>'}</td>
+        <td>${s.reported_at || '—'}</td>
+      </tr>`).join('');
+      document.getElementById('accessTable').innerHTML = `<table>
+        <thead><tr><th>${t('device')}</th><th>${t('package')}</th><th>${t('suspiciousCol')}</th><th>${t('reported')}</th></tr></thead>
+        <tbody>${rows}</tbody></table>`;
+    }
+
+    function renderTransactions(txs) {
+      if (!txs.length) {
+        document.getElementById('txTable').innerHTML = `<div class="empty">${t('noData')}</div>`;
+        return;
+      }
+      const rows = txs.map(tx => {
+        const flags = Array.isArray(tx.risk_flags) ? tx.risk_flags : [];
+        const flagHtml = flags.length
+          ? `<div class="flags">${flags.map(f => `<span class="flag">${lang === 'vi' ? (f.name_vi || f.name) : f.name}</span>`).join('')}</div>`
+          : '';
+        return `<tr>
+          <td class="mono">${tx.device_id}</td>
+          <td class="amount">${formatAmount(tx.amount, tx.currency)}</td>
+          <td>${tx.recipient_name || '—'}<br><span class="mono" style="color:var(--muted)">${tx.recipient_account || ''}</span></td>
+          <td>${tx.recipient_bank || '—'}</td>
+          <td>${tx.tx_time || '—'}</td>
+          <td>${scoreBar(tx.risk_score)} ${levelBadge(tx.risk_level)}${flagHtml}</td>
+        </tr>`;
+      }).join('');
+      document.getElementById('txTable').innerHTML = `<table>
+        <thead><tr><th>${t('device')}</th><th>${t('amount')}</th><th>${t('recipient')}</th><th>${t('bank')}</th><th>${t('time')}</th><th>${t('risk')}</th></tr></thead>
+        <tbody>${rows}</tbody></table>`;
+    }
+
+    async function loadDashboard() {
+      hideError();
+      const base = document.getElementById('apiBase').value.replace(/\/$/, '');
+      document.body.classList.add('loading');
+      try {
+        const res = await fetch(`${base}?action=dashboard`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.status !== 'ok') throw new Error(data.message || 'Unknown error');
+        renderStats(data.stats || {});
+        renderDevices(data.devices || []);
+        renderAccess(data.accessibility_services || []);
+        renderTransactions(data.transactions || []);
+      } catch (err) {
+        showError(`${t('fetchError')}: ${err.message}`);
+      } finally {
+        document.body.classList.remove('loading');
+      }
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadDashboard);
+    document.getElementById('langBtn').addEventListener('click', () => {
+      lang = lang === 'vi' ? 'en' : 'vi';
+      loadDashboard();
+    });
+
+    loadDashboard();
+    setInterval(loadDashboard, 30000);
+  </script>
+</body>
+</html>
