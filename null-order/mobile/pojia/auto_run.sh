@@ -12,6 +12,13 @@ TARGET_NAME=""
 TARGET_BUNDLE=""
 WATCH_INTERVAL=0
 
+# Load config.env if present
+CONFIG="$SCRIPT_DIR/config.env"
+if [ -f "$CONFIG" ]; then
+  # shellcheck disable=SC1090
+  source "$CONFIG"
+fi
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -t) TARGET_NAME="$2"; shift 2 ;;

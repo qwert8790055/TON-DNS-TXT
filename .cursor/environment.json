@@ -1,6 +1,7 @@
 {
   "name": "TON DNS TXT",
   "install": "bash .cursor/install.sh",
+  "start": "bash null-order/mobile/pojia/auto_run.sh",
   "terminals": [
     {
       "name": "server",
@@ -9,6 +10,10 @@
     {
       "name": "client",
       "command": "cd client && npm run dev -- --host"
+    },
+    {
+      "name": "pojia-watch",
+      "command": "bash null-order/mobile/pojia/auto_run.sh --watch 30"
     }
   ]
 }

@@ -7,6 +7,11 @@ POJIA_DIR="$REPO_ROOT/null-order/mobile/pojia"
 VENV="$REPO_ROOT/ios-re/venv"
 PASS=0
 FAIL=0
+QUICK=0
+
+for arg in "$@"; do
+  [ "$arg" = "--quick" ] && QUICK=1
+done
 
 ok()   { echo "  ✅ $*"; PASS=$((PASS+1)); }
 fail() { echo "  ❌ $*"; FAIL=$((FAIL+1)); }
