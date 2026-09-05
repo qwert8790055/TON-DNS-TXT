@@ -31,4 +31,7 @@ python3 -m venv venv
 ./venv/bin/pip install --upgrade pip
 ./venv/bin/pip install -r requirements.txt
 
+# --- iOS reverse-engineering toolchain (optional; see ios-re/README.md) ---
+bash "$repo_root/.cursor/ios-re-install.sh"
+
 echo "install.sh completed"
