@@ -110,7 +110,11 @@ cd ~/TON-DNS-TXT && bash scripts/one-click-skills.sh ~/Downloads/机密
 - [x] dns-records 缓存 5min (`server/lib/cache.ts`)
 - [x] JSON body 16KB 限制
 - [x] `npm audit fix` 依赖更新（High 已修复，2 个 moderate 为 express 传递依赖）
-- [ ] HTTPS + 域名绑定（待用户配置）
+- [x] TonConnect manifest 指向当前部署地址
+- [x] 命令清单 `COMMANDS.md`
+- [ ] HTTPS + 域名绑定（可选，提供域名即可）
+
+**技能包状态：✅ 已完成**（PDF 参考文档为可选项，不影响使用）
 
 ## 已上传参考文件（自动同步）
 

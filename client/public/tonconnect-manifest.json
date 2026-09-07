@@ -1,5 +1,5 @@
 {
-  "url": "https://dns.resistance.dog",
+  "url": "http://135.181.228.18:8080",
   "name": "TON DNS TXT",
-  "iconUrl": "https://dns.resistance.dog/favicon.svg"
+  "iconUrl": "http://135.181.228.18:8080/favicon.svg"
 }
