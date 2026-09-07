@@ -44,6 +44,7 @@ POST_TYPES = {
     "ctf": ("bulletin", "ctf.md"),
     "build": ("bulletin", "build.md"),
     "recruit": ("bulletin", "recruit.md"),
+    "threat": ("bulletin", "threat_bc_scam.md"),
 }
 
 VALID_ROLES = set(load_roles().get("roles", {}).keys())
