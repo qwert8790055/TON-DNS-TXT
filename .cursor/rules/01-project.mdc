@@ -1,0 +1,34 @@
+---
+description: TON-DNS-TXT 项目上下文与开发规范
+globs: "**/*"
+alwaysApply: true
+---
+
+# 项目规范
+
+## 架构
+
+- 前端：`client/` React + Vite + TonConnect
+- 后端：`server/` Express，仅 2 个 GET 代理端点
+- 生产：`135.181.228.18:8080`（nginx:8080 → PM2:4727）
+
+## 开发
+
+```bash
+cd server && npm run dev    # API :4727
+cd client && npm run dev    # Web :5173
+```
+
+## 部署路径（服务器）
+
+- 前端：`/var/www/dns-text/client/`
+- API：`/var/www/dns-text/server/`（PM2: `dns-text-api`）
+- 技能上传：`/var/www/skills-upload/`
+
+## 分支命名
+
+Cloud Agent 分支：`cursor/<描述>-0699`
+
+## 技能包
+
+安全审计：`.cursor/skills/jimi/SKILL.md`

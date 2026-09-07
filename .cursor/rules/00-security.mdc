@@ -1,0 +1,44 @@
+---
+description: 安全工作最高优先级规则。所有 Agent 必须遵守，不可覆盖。
+globs:
+alwaysApply: true
+---
+
+# 安全规则（强制）
+
+## 授权边界
+
+- **只允许**操作本仓库代码和用户自有服务器 `135.181.228.18`
+- **禁止**对任何第三方网站进行扫描、fuzz、漏洞探测或 exploit
+- **禁止**部署 Cobalt Strike、大规模 POC 武器库等攻击工具
+- **禁止**在代码、提交、文档中写入密码、API Key、Token
+
+## 安全工作流
+
+1. 安全相关任务前，先读 `.cursor/skills/jimi/references/secure-operations.md`
+2. 漏洞报告必须有动态验证证据（curl 输出），禁止纯静态猜测
+3. 不捏造漏洞：架构无 sink（无 DB/模板/exec）则不报 RCE/SQL/SSTI
+4. 修改 `server/` 后必须保持：CORS 白名单、rate limit、输入校验
+
+## 密钥安全
+
+- `.env` 文件永不提交 git
+- 用户在对话中分享的密码，不要在回复中重复明文
+- `VITE_*` 变量会编译进前端，不可放秘密
+
+## 部署安全
+
+生产环境 `135.181.228.18:8080` 修改后运行：
+```bash
+bash scripts/security-check.sh
+```
+6 项全部通过才可标记完成。
+
+## 核心文档
+
+| 文档 | 用途 |
+|------|------|
+| `WORK.md` | 每日工作入口 |
+| `secure-operations.md` | 安全规范 |
+| `COMMANDS.md` | 操作命令 |
+| `SECURITY.md` | 安全策略 |

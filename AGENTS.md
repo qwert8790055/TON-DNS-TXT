@@ -73,7 +73,8 @@ Security audit skill: `.cursor/skills/jimi/`
 
 ## Cursor Cloud Specific Instructions
 
-- Server SSH access is for deploying **this project only**
+- **Start every session by reading `WORK.md`** — the master work document
+- Security rules in `.cursor/rules/00-security.mdc` are mandatory and always apply
 - Skill uploads go to `/var/www/skills-upload/` on the server
 - After server uploads, run `bash scripts/auto-sync-skills.sh`
 - Prefer `git push origin master` over force push
