@@ -1,10 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { beginCell } from '@ton/core';
+import { isValidTonAddress } from '../lib/validation';
+import { sendInternalError } from '../lib/errors';
+import { getCached, setCache } from '../lib/cache';
 
 const TONCENTER_KEY = process.env.TONCENTER_KEY ?? '';
+const DNS_CACHE_TTL_MS = Number(process.env.DNS_CACHE_TTL_MS) || 300_000;
 
-// Pre-compute the \x00 BOC once at startup.
-// This is the domain parameter for dnsresolve on NFT items.
 const NULL_BYTE_BOC = beginCell().storeUint(0, 8).endCell().toBoc().toString('base64');
 
 export const router = Router();
@@ -17,6 +19,18 @@ router.get('/dns-records', async (req: Request, res: Response) => {
   const address = req.query.address as string | undefined;
   if (!address) {
     res.status(400).json({ error: 'Missing address parameter' });
+    return;
+  }
+
+  if (!isValidTonAddress(address)) {
+    res.status(400).json({ error: 'Invalid address format' });
+    return;
+  }
+
+  const cacheKey = `dns-records:${address}`;
+  const cached = getCached<{ ok: boolean; boc: string | null }>(cacheKey);
+  if (cached) {
+    res.json(cached);
     return;
   }
 
@@ -37,7 +51,7 @@ router.get('/dns-records', async (req: Request, res: Response) => {
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
     };
     if (TONCENTER_KEY) headers['X-API-Key'] = TONCENTER_KEY;
 
@@ -58,27 +72,28 @@ router.get('/dns-records', async (req: Request, res: Response) => {
         exit_code: number;
         stack: Array<[string, unknown]>;
       };
-      error?: string;
     };
 
     if (!data.ok || !data.result || data.result.exit_code !== 0) {
-      // No records or contract error — return empty
-      res.json({ ok: true, boc: null });
+      const payload = { ok: true, boc: null };
+      setCache(cacheKey, payload, DNS_CACHE_TTL_MS);
+      res.json(payload);
       return;
     }
 
     const stack = data.result.stack;
-    // stack[0] = bits resolved (int), stack[1] = HashmapE cell or null
     if (!stack || stack.length < 2 || stack[1][0] === 'null') {
-      res.json({ ok: true, boc: null });
+      const payload = { ok: true, boc: null };
+      setCache(cacheKey, payload, DNS_CACHE_TTL_MS);
+      res.json(payload);
       return;
     }
 
     const cellEntry = stack[1][1] as { bytes?: string } | undefined;
-    const boc = cellEntry?.bytes ?? null;
-
-    res.json({ ok: true, boc });
-  } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    const payload = { ok: true, boc: cellEntry?.bytes ?? null };
+    setCache(cacheKey, payload, DNS_CACHE_TTL_MS);
+    res.json(payload);
+  } catch {
+    sendInternalError(res);
   }
 });
