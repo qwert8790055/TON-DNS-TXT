@@ -1,6 +1,6 @@
 ---
 name: jimi
-description: 授权安全审计技能包。对自有 TON-DNS-TXT 应用进行架构剖析、暴露面枚举、动态漏洞验证、加固与复测。禁止对未授权第三方目标使用。
+description: 授权安全审计技能包。安全工作最高优先级参考 secure-operations.md。对自有资产进行架构剖析、动态漏洞验证、加固与复测。禁止未授权目标。
 environments: [cloud, local]
 ---
 
@@ -20,6 +20,7 @@ environments: [cloud, local]
 ## 何时使用
 
 - 用户要求漏洞挖掘、安全审计、动态验证、安全强化
+- **开始任何安全工作前，先读 `references/secure-operations.md`**
 - 需要分析 Express/React/Telegram Bot 架构
 - 需要复现并验证已发现的安全问题
 
@@ -77,6 +78,7 @@ curl -s "$BASE/domains?wallet=' OR 1=1--"
 
 | 文件 | 说明 |
 |------|------|
+| `references/secure-operations.md` | **安全工作规范（最高优先级）** |
 | `references/methodology.md` | 完整授权测试方法论 |
 | `references/UPLOAD.md` | **Mac → 服务器上传指南** |
 | `references/README.md` | 参考文档分类说明 |
