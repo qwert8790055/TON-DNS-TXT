@@ -111,3 +111,12 @@ cd ~/TON-DNS-TXT && bash scripts/one-click-skills.sh ~/Downloads/机密
 - [x] JSON body 16KB 限制
 - [x] `npm audit fix` 依赖更新（High 已修复，2 个 moderate 为 express 传递依赖）
 - [ ] HTTPS + 域名绑定（待用户配置）
+
+## 已上传参考文件（自动同步）
+
+| 文件 | 名称 | 用途 |
+|------|------|------|
+| `uploaded/jimi/授权测试方法论.md` | 授权测试方法论.md | 机密文档/表格 |
+
+> 同步时间: 2026-09-07T17:51:44Z
+
