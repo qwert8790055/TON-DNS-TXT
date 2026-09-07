@@ -118,5 +118,5 @@ cd ~/TON-DNS-TXT && bash scripts/one-click-skills.sh ~/Downloads/机密
 |------|------|------|
 | `uploaded/jimi/授权测试方法论.md` | 授权测试方法论.md | 机密文档/表格 |
 
-> 同步时间: 2026-09-07T17:51:44Z
+> 同步时间: 2026-09-07T18:01:42Z
 

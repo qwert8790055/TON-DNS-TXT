@@ -117,7 +117,18 @@ curl -s "$BASE/domains?wallet=http://169.254.169.254/latest/meta-data"
 3. **过度设计** — one-click、auto-sync、receive.sh、incoming 目录… 工具链比实际文件还多
 4. **剑走偏锋不够** — 未深入测试：nginx 缓存投毒、HTTP/2 降级、TonConnect manifest 篡改、链上 dns_text 投毒后的 UI 行为
 
-### 下一步改进（执行力优先）
+### 深度复测（2026-09-07 18:01 UTC）
+
+| 测试项 | 结果 | 说明 |
+|--------|------|------|
+| Nginx 安全头 | ✅ | nosniff, SAMEORIGIN, Referrer-Policy |
+| 路径穿越 | ❌ 误报 | 返回 SPA index.html，非敏感文件 |
+| HTTP 双 Host | 200 | 无异常行为 |
+| 双重 URL 编码 | 400 | 输入校验生效 |
+| Unicode 全角绕过 | 空响应 | 被拦截 |
+| TonConnect manifest | ⚠️ Info | 指向 `dns.resistance.dog`，非当前 IP 部署 |
+| Rate limit | ✅ | RateLimit-Remaining 递减正常 |
+
 
 ```
 [简单] Mac 一条 scp 命令 + 截图验证
