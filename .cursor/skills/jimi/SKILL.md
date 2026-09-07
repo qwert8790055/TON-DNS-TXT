@@ -122,7 +122,8 @@ cd ~/TON-DNS-TXT && bash scripts/one-click-skills.sh ~/Downloads/机密
 
 | 文件 | 名称 | 用途 |
 |------|------|------|
+| `uploaded/jimi/secure-operations.md` | secure-operations.md | 机密文档/表格 |
 | `uploaded/jimi/授权测试方法论.md` | 授权测试方法论.md | 机密文档/表格 |
 
-> 同步时间: 2026-09-07T18:01:42Z
+> 同步时间: 2026-09-07T18:09:30Z
 
