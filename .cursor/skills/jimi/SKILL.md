@@ -81,7 +81,16 @@ curl -s "$BASE/domains?wallet=' OR 1=1--"
 | `references/UPLOAD.md` | **Mac → 服务器上传指南** |
 | `references/README.md` | 参考文档分类说明 |
 
-### 服务器上传路径（用户只能上传到服务器）
+### 一键操作
+
+**Mac 终端（复制这一条）：**
+```bash
+cd ~/TON-DNS-TXT && bash scripts/one-click-skills.sh ~/Downloads/机密
+```
+
+上传后回复「服务器已上传」，Agent 运行 `scripts/auto-sync-skills.sh` 自动同步。
+
+### 服务器上传路径
 
 ```
 /var/www/skills-upload/
