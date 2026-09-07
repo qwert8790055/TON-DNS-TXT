@@ -78,9 +78,19 @@ curl -s "$BASE/domains?wallet=' OR 1=1--"
 | 文件 | 说明 |
 |------|------|
 | `references/methodology.md` | 完整授权测试方法论 |
-| `references/README.md` | 参考文档上传指南 |
-| `null-order/reports/PENTEST-TON-DNS-TXT-20260907.md` | 渗透测试报告 |
-| `null-order/reports/PENTEST-TON-DNS-TXT-20260907-HARDENING.md` | 加固复测报告 |
+| `references/UPLOAD.md` | **Mac → 服务器上传指南** |
+| `references/README.md` | 参考文档分类说明 |
+
+### 服务器上传路径（用户只能上传到服务器）
+
+```
+/var/www/skills-upload/
+├── jimi/      # 机密文档
+├── pdfs/      # 渗透测试 PDF
+└── scripts/   # 基线检查脚本
+```
+
+上传后回复「服务器已上传」，Agent 从服务器同步到 `references/`。
 
 ## 加固清单（已完成 ✅）
 
@@ -90,5 +100,5 @@ curl -s "$BASE/domains?wallet=' OR 1=1--"
 - [x] 500 错误泛化 (`server/lib/errors.ts`)
 - [x] dns-records 缓存 5min (`server/lib/cache.ts`)
 - [x] JSON body 16KB 限制
-- [ ] `npm audit fix` 依赖更新
+- [x] `npm audit fix` 依赖更新（High 已修复，2 个 moderate 为 express 传递依赖）
 - [ ] HTTPS + 域名绑定（待用户配置）
