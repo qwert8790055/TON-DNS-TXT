@@ -1,4 +1,6 @@
 import { Router, Request, Response } from 'express';
+import { isValidTonAddress } from '../lib/validation';
+import { sendInternalError } from '../lib/errors';
 
 const TONAPI_KEY = process.env.TONAPI_KEY ?? '';
 const DNS_COLLECTION = 'EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz';
@@ -16,14 +18,19 @@ router.get('/domains', async (req: Request, res: Response) => {
     return;
   }
 
+  if (!isValidTonAddress(wallet)) {
+    res.status(400).json({ error: 'Invalid wallet address format' });
+    return;
+  }
+
   try {
     const url = new URL(`https://tonapi.io/v2/accounts/${encodeURIComponent(wallet)}/nfts`);
     url.searchParams.set('collection', DNS_COLLECTION);
     url.searchParams.set('limit', '100');
     url.searchParams.set('offset', '0');
 
-    const headers: Record<string, string> = { 'Accept': 'application/json' };
-    if (TONAPI_KEY) headers['Authorization'] = `Bearer ${TONAPI_KEY}`;
+    const headers: Record<string, string> = { Accept: 'application/json' };
+    if (TONAPI_KEY) headers.Authorization = `Bearer ${TONAPI_KEY}`;
 
     const tonapiRes = await fetch(url.toString(), { headers });
     if (!tonapiRes.ok) {
@@ -35,13 +42,13 @@ router.get('/domains', async (req: Request, res: Response) => {
       nft_items?: Array<{ address: string; dns?: string; metadata?: { name?: string } }>;
     };
 
-    const domains = (data.nft_items ?? []).map(item => ({
+    const domains = (data.nft_items ?? []).map((item) => ({
       name: item.dns ?? item.metadata?.name ?? item.address.slice(0, 8) + '…',
       address: item.address,
     }));
 
     res.json({ domains });
-  } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+  } catch {
+    sendInternalError(res);
   }
 });
