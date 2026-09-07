@@ -1,0 +1,31 @@
+services:
+  wechat-lead-hub:
+    build: .
+    ports:
+      - "4780:4780"
+    environment:
+      PORT: 4780
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      H5_BASE_URL: ${H5_BASE_URL:-http://localhost:4780}
+      DEMO_MODE: ${DEMO_MODE:-true}
+      SMS_PROVIDER: ${SMS_PROVIDER:-mock}
+    volumes:
+      - lead-hub-data:/app/server/data
+    restart: unless-stopped
+
+  # Optional: mock third-party receiver for testing API push mode
+  mock-third-party:
+    image: node:22-alpine
+    working_dir: /app
+    command: node server.js
+    ports:
+      - "4782:4782"
+    volumes:
+      - ./mock-third-party:/app:ro
+    profiles:
+      - demo
+
+volumes:
+  lead-hub-data:
