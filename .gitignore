@@ -15,3 +15,6 @@ __pycache__/
 ios-re/venv/
 ios-re/tools/
 null-order/mobile/pojia/artifacts/
+
+# Risk control (generated DB)
+risk-control/risk_control.db
